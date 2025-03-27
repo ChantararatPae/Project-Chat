@@ -64,3 +64,11 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+## Update Firebase Config
+
+Environment variables file: .env
+Controller Firebase: ContactController.php
+Provider files: AppServiceProvider.php, and FirebaseServiceProvider.php
+
+--Enjoy ^_^
