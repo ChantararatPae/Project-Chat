@@ -13,8 +13,8 @@ class FirebaseServiceProvider extends ServiceProvider
     {
         $this->app->singleton(Firebase::class, function () {
             $firebase = (new \Kreait\Firebase\Factory())
-                //->withServiceAccount(config('firebase.credentials'))
-                ->withServiceAccount(config('C:\xampp\htdocs\Project_Chat\example-app\config\firebase_credentials.json'))
+                ->withServiceAccount(base_path(env('FIREBASE_CREDENTIALS')))
+                ->withDatabaseUri(env('FIREBASE_DATABASE_URL'))
                 ->create();
 
             return $firebase;

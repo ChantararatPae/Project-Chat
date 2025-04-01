@@ -1,23 +1,3 @@
-<?php
-
-// ตรวจสอบการส่งข้อมูล
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $email = $_POST['email'];
-    $password = $_POST['password'];
-
-    // ตัวอย่างการตรวจสอบข้อมูล (ควรเชื่อมต่อฐานข้อมูลแทน)
-    if ($email === "admin@example.com" && $password === "123456") {
-        $_SESSION['user'] = $email;
-        header("Location: dashboard.php"); // เปลี่ยนเส้นทางไปหน้าหลัก
-        exit();
-    } else {
-        $error = "อีเมลหรือรหัสผ่านไม่ถูกต้อง";
-    }
-}
-?>
-
-
-
 <!DOCTYPE html>
 <html lang="th">
 <head>
@@ -139,13 +119,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="objectcontent">
             <div class="container">
                 <h1>เข้าสู่ระบบ</h1>
-                <?php if (!empty($error)): ?>
-                    <p class="error"><?php echo $error; ?></p>
-                <?php endif; ?>
-                <form method="POST" action="">
+                <!-- แสดงข้อความผิดพลาดถ้ามี -->
+                @if($errors->any())
+                    <p class="error">{{ $errors->first() }}</p>
+                @endif
+                <form method="POST" action="{{ route('login') }}">
+                    @csrf
                     <div class="form-group">
-                        <label for="email">อีเมล</label>
-                        <input type="email" id="email" name="email" required>
+                        <label for="username">ชื่อผู้ใช้</label>
+                        <input type="text" id="username" name="username" required>
                     </div>
                     <div class="form-group input">
                         <label for="password">รหัสผ่าน</label>

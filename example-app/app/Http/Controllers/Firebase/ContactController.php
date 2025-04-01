@@ -12,39 +12,31 @@ class ContactController extends Controller //คลาส ContactController จ�
     public function __construct()
     {
         $factory = (new Factory) //สร้างอินสแตนซ์ของ Kreait\Firebase\Factory ใช้สำหรับตั้งค่าการเชื่อมต่อ Firebase
-        ->withServiceAccount('C:\xampp\htdocs\Project_Chat\example-app\config\firebase_credentials.json');
-        //->withServiceAccount(config('firebase.projects.app.credentials')); //เปลี่ยนเป็นเชื่อมต่อ credentials ใน firebase โดยตรง - แทนที่จะใช้ credentials.file เพื่ออ่านไฟล์ JSON
-        
-        //$factory = (new Factory)->withServiceAccount('/path/to/firebase_credentials.json')
-        //->withDatabaseUri('https://my-project-default-rtdb.firebaseio.com');
+        ->withServiceAccount(base_path(env('FIREBASE_CREDENTIALS')))
+        ->withDatabaseUri(env('FIREBASE_DATABASE_URL'));
  
-
         $this->database = $factory->createDatabase(); //เมื่อเรียก createDatabase(), มันจะส่งกลับอินสแตนซ์ของ Kreait\Firebase\Database ที่เป็นตัวกลางในการทำงานกับฐานข้อมูล
         $this->tablename = 'employee'; // เก็บข้อมูลไว้ใน path ชื่อ employee
-        //dd($this->database);
+
     }
 
 
-    public function EmployeeTable() // เมื่อเรียกใช้ EmployeeTable ฟังก์ชันนี้จะทำการแสดงข้อมูลจาก data-management-table.EmployeeTable
+    public function __EmployeeTable()
     {
-        return view('data-management-table.EmployeeTable');
+        $reference = $this->database->getReference('employee'); // Path ของข้อมูล
+        $snapshot = $reference->getSnapshot();
+        $data = $snapshot->getValue(); // ดึงข้อมูลเป็น array
+
+        return view('employee', compact('data')); // ส่งข้อมูลไปที่ @forelse ($data as $item) ใน EmployeeTable.blade --โดยผ่าน employee.blade ซึ่งเป็นหน้าหลัก เพื่อเรียกใช้ @include
+        //return view('data-management-table.EmployeeTable', compact('data'));
     }
 
-    public function CreateEmployee() // เมื่อเรียกใช้ CreateEmployee ฟังก์ชันนี้จะทำการแสดงข้อมูลจาก data-management-table.CreateEmployee
+
+    public function CreateEmployee()
     {
         return view('data-management-table.CreateEmployee');
     }
 
-    public function testDatabaseConnection()
-    {
-        try {
-            $ref = $this->database->getReference('employee'); // ตรวจสอบการเข้าถึง 'employee' table
-            $data = $ref->getValue(); // ดึงข้อมูลจาก Firebase Database
-            dd($data); // ดูข้อมูลที่ดึงมา
-        } catch (\Exception $e) {
-            dd('Error: ' . $e->getMessage()); // ถ้ามีข้อผิดพลาดให้แสดง error message
-        }
-    }
 
     public function store(Request $request)
     {

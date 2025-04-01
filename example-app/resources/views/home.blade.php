@@ -120,7 +120,7 @@
                     </div>
                     <div class="content-body">
                         <div class="table-wrapper">
-                            @include('data-management-table.EmployeeTable', ['data' => $data])
+                            123456
                         </div>
                     </div>
                     <div class="Footer">

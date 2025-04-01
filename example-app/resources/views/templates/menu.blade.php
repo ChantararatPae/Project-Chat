@@ -1,15 +1,20 @@
 <!-- resources/views/layouts/menu.blade.php -->
 <div class="menu">
     <ul>
-        <li><a href="#">ข่าวสารประชาสัมพันธ์</a></li>
+        <li><a href="{{ url('/home') }}">ข่าวสารประชาสัมพันธ์</a></li>
         <li><a href="{{ url('/chat') }}">ข้อความ</a></li>
         <li><a href="{{ url('/employee') }}">สมาชิก</a></li>
         <li><a href="#">จัดการข้อมูลส่วนตัว</a></li>
         <li><a href="#">จัดการกลุ่มผู้ใช้งาน</a></li>
         <li><a href="#">เกี่ยวกับ</a></li>
-        <li><a href="#">ออกจากระบบ</a></li>
+        <li><a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">ออกจากระบบ</a></li>
     </ul>
 </div>
+
+<!-- ฟอร์มสำหรับ logout -->
+<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+    @csrf
+</form>
 
 <style>
 .menu {
